@@ -10,6 +10,9 @@ void print_usage() {
     printf("  commit  Commit staged files to history (-m \"message\")\n");
     printf("  status  Show the working tree status\n");
     printf("  log     Show commit logs\n");
+    printf("  branch  List or create branches\n");
+    printf("  checkout Switch branches\n");
+    printf("  merge   Fast-forward merge a branch\n");
 }
 
 int main(int argc, char *argv[]) {
@@ -36,6 +39,24 @@ int main(int argc, char *argv[]) {
         return cvc_status();
     } else if (strcmp(argv[1], "log") == 0) {
         return cvc_log();
+    } else if (strcmp(argv[1], "branch") == 0) {
+        if (argc == 2) {
+            return cvc_branch(NULL);
+        } else {
+            return cvc_branch(argv[2]);
+        }
+    } else if (strcmp(argv[1], "checkout") == 0) {
+        if (argc < 3) {
+            printf("Error: 'checkout' requires a branch name\n");
+            return 1;
+        }
+        return cvc_checkout(argv[2]);
+    } else if (strcmp(argv[1], "merge") == 0) {
+        if (argc < 3) {
+            printf("Error: 'merge' requires a branch name\n");
+            return 1;
+        }
+        return cvc_merge(argv[2]);
     } else {
         printf("Unknown command: %s\n", argv[1]);
         print_usage();
